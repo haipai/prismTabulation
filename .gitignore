@@ -4,3 +4,11 @@
 #STATA
 .dta
 
+#Arcgis
+.cpg
+.dbf
+.shp
+.prj
+.xml
+.shx
+
