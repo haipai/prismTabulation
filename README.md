@@ -28,16 +28,17 @@ Data Files
 2. cb_2020_us_county_5m.shp - county shape file downloaded from https://www2.census.gov/geo/tiger/GENZ2020/shp/ 
 3. wbdhuc8.shp, wbdhuc10, wbdhuc12.shp - converted from polygon feature from USGS HUC https://prd-tnm.s3.amazonaws.com/index.html?prefix=StagedProducts/Hydrography/WBD/National/GDB/
 The huc shape files are not included due to the large size. Another observation is that there is a size limit of 2GB for .shp file, so it is better to work with feature class in a gdb. 
-4. .csv - county intersection file with PRISM cells 
-5. .csv - HUC8 intersection file with PRISM cells 
-6. .csv - HUC12 intersection file with PRISM cells 
-7. .csv - Cropland filter based on NCLD2001
-8. .csv - Cropland filter based on NCLD2006
-9. .csv - Cropland filter based on NCLD2011
-10. .csv - Cropland filter based on NCLD2016
+4. cb_2020_us_county_prism.csv - county intersection file with PRISM cells 
+5. huc8_prism.csv - HUC8 intersection file with PRISM cells 
+6. huc12_prism.csv - HUC12 intersection file with PRISM cells 
+7. prism_nlcd2001.csv - Cropland filter based on NCLD2001
+8. prism_nlcd2006.csv - Cropland filter based on NCLD2006
+9. prism_nlcd2011.csv - Cropland filter based on NCLD2011
+10. prism_nlcd2016.csv - Cropland filter based on NCLD2016
 
 R scripts 
-1. tabulateDaily.r with (weather variables, intersection files, filter files, timewindow)
+1. tabulateDaily.r with (prismfold,weather variables, intersection files, filter files, timewindow)
+prismfold: directory where you saved the downloaded PRISM files.The file structure is weathervariable / year / daily raster files 
 weather variables:   []
 intersection files:  prepared intersection files or your file, remember the PRISM cell indentifier is names as pid, targeted spatial unit identifier is names as sid. and overlapping area variable is named as area (unit of area is not important since only shares matter).
 filter files: none, no filter file, otherwise, using one of the pre-prepared filter file. Name PRISM cell identifier as pid, filter variable as flag (1: included, 0: excluded).
@@ -45,8 +46,10 @@ time windown: array of years, like c(1981:2010), c(2020:2020)
 2. tabulateMonthly.r with the same set of arguments as in tabulateDaily.r 
 
 
+Some Used Arcpy functions
+1. arcpy.analysis.TabulateIntersection() : tabulate intersected areas 
+2. arcpy.sa.TabulateArea(): tabulate raster values
+3. arcpy.conversion.TableToTable(): convert arcgis table to csv table  
 
 
-
-Tabulation
 
