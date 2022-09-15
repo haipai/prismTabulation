@@ -5,10 +5,10 @@
 .dta
 
 #Arcgis
-.cpg
-.dbf
-.shp
-.prj
-.xml
-.shx
+data/.cpg
+data/.dbf
+data/.shp
+data/.prj
+data/.xml
+data/.shx
 
