@@ -25,8 +25,9 @@ Data Sources
 
 Data Files
 1. prism.shp - PRISM raster cell shape file. Since PRISM has only the same extent and spatial resolution, you can use this shape file directly. Cell identifier variable： 
-2. .shp - county shape file downloaded from 
-3. .shp - converted from polygon feature from USGS HUC geodatabase () 
+2. cb_2020_us_county_5m.shp - county shape file downloaded from https://www2.census.gov/geo/tiger/GENZ2020/shp/ 
+3. wbdhuc12.shp - converted from polygon feature from USGS HUC https://prd-tnm.s3.amazonaws.com/index.html?prefix=StagedProducts/Hydrography/WBD/National/GDB/
+The huc shape files are not included due to the large size. 
 4. .csv - county intersection file with PRISM cells 
 5. .csv - HUC8 intersection file with PRISM cells 
 6. .csv - HUC12 intersection file with PRISM cells 
