@@ -37,13 +37,13 @@ The huc shape files are not included due to the large size. Another observation 
 10. prism_nlcd2016.csv - Cropland filter based on NCLD2016
 
 R scripts 
-1. tabulateDaily.r with (prismfold,weather variables, intersection files, filter files, timewindow)
-prismfold: directory where you saved the downloaded PRISM files.The file structure is weathervariable / year / daily raster files 
-weather variables:   []
+1. tabulateDaily.r with (prismfold,weather variables, spatialid,intersection files, filter files, timewindow), 
+prismfold: directory where you saved the downloaded PRISM files.The file structure is weathervariable / year / daily raster zip files 
+weather variables:  like c('ppt','tmax') or c('ppt','tdmean','tmax','tmean','tmin','vpdmin','vpdmax') 
+spatialid: the variable name used to identify spatial unit, like 'huc8','huc12','geoid'.  
 intersection files:  prepared intersection files or your file, remember the PRISM cell indentifier is names as pid, targeted spatial unit identifier is names as sid. and overlapping area variable is named as area (unit of area is not important since only shares matter).
 filter files: none, no filter file, otherwise, using one of the pre-prepared filter file. Name PRISM cell identifier as pid, filter variable as flag (1: included, 0: excluded).
 time windown: array of years, like c(1981:2010), c(2020:2020) 
-2. tabulateMonthly.r with the same set of arguments as in tabulateDaily.r 
 
 
 Some Used Arcpy functions
