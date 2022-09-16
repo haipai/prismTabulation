@@ -43,7 +43,7 @@ tabulateDaily<-function(prismfold,wvars,spatialid,interfile,filterfile,timespan)
       
       while(dt<as.Date(paste0(toString(yr+1),'0101'),format='%Y%m%d')) {
         dtstr <- as.character(format(dt,format='%Y%m%d'))
-        cat(sprintf('%s\n',dtstr)) 
+        # cat(sprintf('%s\n',dtstr)) 
         for (wvar in wvars) {
           #unzip ppt 
           file_wvar  <- paste0(prismfold,'/',wvar,'/',yr,'/','PRISM_',wvar,'_stable_4kmD2_',dtstr,'_bil.zip',sep='') 
@@ -110,7 +110,7 @@ tabulateDaily<-function(prismfold,wvars,spatialid,interfile,filterfile,timespan)
   finally={
     setwd(oldpath)
     unlink(tempfoldname,recursive=TRUE) 
-    message('Tabulation job is done') 
+    message(sprintf('The tabulation job is done and takes %6.2f minutes',t2[3]/60)) 
   }
   )
   
