@@ -1,5 +1,5 @@
 # prismTabulation
-This repository is about tabulate several weather variables by various spatial units, like county, HUC8/12 based on PRISM data set. Different from the https://github.com/bryanparthum/prism_weather_data, this repository provides a set of R scripts to tabulate weather variables from PRISM by first downloading corresponding raster files from Oregon PRISM FTP site and subsequently handling the data tabulation. 
+This repository is about tabulate several weather variables by various spatial units, like county, HUC8/12 based on PRISM data set. Different from the https://github.com/bryanparthum/prism_weather_data, this repository provides a set of R scripts to tabulate weather variables from PRISM by first downloading corresponding raster files from Oregon PRISM FTP (prism.nacse.org) site and subsequently handling the data tabulation. 
 
 At the same, this repository emphasizes the focus of agriculture related weather tabulation. Specifically, the PRISM cells included in the final tabulation need to have some cropland identified in National Land Cover Database (NLCD). The aggregation scheme is the area-weighted method. For example, if a county $i$ overlaps with a set of PRISM cells $j=1,\ldots,J$, the aggregated average of weather variable $w$ is
 $$w_i = \frac{1}{A_i}\sum^J_{j=1}（a_{ij}*w_j）$$
