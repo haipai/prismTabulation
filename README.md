@@ -32,9 +32,13 @@ The huc shape files are not included due to the large size. Another observation 
 5. huc8_prism.csv - HUC8 intersection file with PRISM cells 
 6. huc12_prism.csv - HUC12 intersection file with PRISM cells 
 7. prism_nlcd2001.csv - Cropland filter based on NCLD2001
-8. prism_nlcd2006.csv - Cropland filter based on NCLD2006
-9. prism_nlcd2011.csv - Cropland filter based on NCLD2011
-10. prism_nlcd2016.csv - Cropland filter based on NCLD2016
+8. prism_nlcd2004.csv - Cropland filter based on NCLD2004
+9. prism_nlcd2006.csv - Cropland filter based on NCLD2006
+10. prism_nlcd2008.csv - Cropland filter based on NCLD2008
+11. prism_nlcd2011.csv - Cropland filter based on NCLD2011
+12. prism_nlcd2014.csv - Cropland filter based on NCLD2013
+13. prism_nlcd2016.csv - Cropland filter based on NCLD2016
+14. prism_nlcd2019.csv - Cropland filter based on NCLD2019
 
 R scripts 
 1. tabulateDaily.r with (prismfold,weather variables, spatialid,intersection files, filter files, timewindow), 
@@ -48,7 +52,7 @@ time windown: array of years, like c(1981:2010), c(2020:2020)
 
 Some Used Arcpy functions
 1. arcpy.analysis.TabulateIntersection() : tabulate intersected areas 
-2. arcpy.sa.TabulateArea(): tabulate raster values
+2. arcpy.sa.TabulateArea(): tabulate raster values https://pro.arcgis.com/en/pro-app/latest/tool-reference/spatial-analyst/tabulate-area.htm
 3. arcpy.conversion.TableToTable(): convert arcgis table to csv table  
 
 
