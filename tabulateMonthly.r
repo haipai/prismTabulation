@@ -1,5 +1,4 @@
-### Tabulate PRISM weather variables
-tabulateDaily<-function(prismfold,wvars,spatialid,interfile,filterfile,timespan) {
+tabulateMonthly<-function(prismfold,wvars,spatialid,interfile,filterfile='',timespan) {
   ### load packages
   require(data.table)
   require(raster)
@@ -8,24 +7,33 @@ tabulateDaily<-function(prismfold,wvars,spatialid,interfile,filterfile,timespan)
   require(digest) 
   require(stringr)
   
-  ## test arguments 
-  #prismfold <- file.path('r:/prism/daily')  
-  #wvars     <- c('ppt')  
-  #spatialid <- 'huc12' 
-  #interfile <- file.path('d:/git/prismTabulation/data/','huc12_prism.csv') 
-  #filterfile<- file.path('d:/git/prismTabulation/data/','prism_nlcd2001.csv')
-  #timespan  <- c(2020:2020) 
+  # ## test arguments  
+  # prismfold <- file.path('r:/prism/monthly/')   
+  # wvars     <- c('ppt','tdmean','tmean','tmin','tmax','vpdmin','vpdmax')  
+  # spatialid <- 'geoid' 
+  # interfile <- file.path('d:/git/prismTabulation/data/','cb_2020_us_county_prism.csv')  
+  # #filterfile<- file.path('d:/git/prismTabulation/data/','prism_nlcd2001.csv') 
+  # timespan  <- c(2020:2020) 
+  # 
   
-  outfile1  <- paste(wvars,collapse='_') 
-  region    <- fread(interfile,header=TRUE,stringsAsFactors = FALSE) 
-  agflag    <- fread(filterfile,header=TRUE,stringsAsFactors = FALSE) 
-  names(region) <- str_to_lower(names(region)) 3
   
-  region <- merge(region,agflag,by='pid',all.x=1)
+  outfile1  <- paste(wvars,collapse='_')  
+  region    <- fread(interfile,header=TRUE,stringsAsFactors = FALSE)  
+  names(region) <- str_to_lower(names(region)) 
+  
+  
+  if (filterfile != '') { 
+    region <- merge(region,agflag,by='pid',all.x=1) 
+    agflag    <- fread(filterfile,header=TRUE,stringsAsFactors = FALSE) 
+  } else {
+    region$flag = 1
+  }
+  
+  
   fields <- c(spatialid,'pid','area') 
   
   region <- region[flag==1,..fields]
-   
+  
   ## mkdir a temp direcotry 
   tempfoldname <- paste0('temp',digest(Sys.time(),algo='md5')) 
   dir.create(tempfoldname) 
@@ -37,18 +45,19 @@ tabulateDaily<-function(prismfold,wvars,spatialid,interfile,filterfile,timespan)
     t1 <- proc.time()
     for (yr in timespan) {
       outfile2 <- toString(yr) 
-      outfile  <- paste0('prismDaily_',outfile1,'_',outfile2,'.csv')  
-      cat(sprintf('Tabulated weather variables in %d are saved into %s\n',yr,file.path(oldpath,outfile)))     
+      outfile  <- paste0('prismMonthly_',outfile1,'_',outfile2,'.csv')  
+      cat(sprintf('Tabulated weather variables in %d are saved into %s\n',yr,file.path(oldpath,outfile)))      
       initialwrite <- 1 
-      dt <- as.Date(paste0(toString(yr),'0101'),format='%Y%m%d')
-      
-      while(dt<as.Date(paste0(toString(yr+1),'0101'),format='%Y%m%d')) {
-        dtstr <- as.character(format(dt,format='%Y%m%d'))
-        # cat(sprintf('%s\n',dtstr)) 
+      months <- str_pad(c(1:12),2,pad='0') 
+      cat(sprintf('Start the year of %d\n',yr))
+      for (mon in months) { 
+        #mon = '01'
+        
+        dtstr = paste0(toString(yr),mon) 
         for (wvar in wvars) {
           #unzip ppt 
-          file_wvar  <- paste0(prismfold,'/',wvar,'/',yr,'/','PRISM_',wvar,'_stable_4kmD2_',dtstr,'_bil.zip',sep='') 
-          zip_wvar   <- paste('PRISM_',wvar,'_stable_4kmD2_',dtstr,'_bil.bil',sep='') 
+          file_wvar  <- paste0(prismfold,'/',wvar,'/',yr,'/','PRISM_',wvar,'_stable_4kmM3_',dtstr,'_bil.zip',sep='') 
+          zip_wvar   <- paste('PRISM_',wvar,'_stable_4kmM3_',dtstr,'_bil.bil',sep='') 
           unzip(file_wvar)
           
           # read in raster files 
@@ -97,7 +106,8 @@ tabulateDaily<-function(prismfold,wvars,spatialid,interfile,filterfile,timespan)
         } else {
           fwrite(result,file=file.path(oldpath,outfile),append=TRUE)
         }
-        dt <- dt + 1 
+        # report process 
+        cat(sprintf('    The month of %s is completed\n',dtstr)) 
         rm('result')
       }
       
@@ -110,26 +120,10 @@ tabulateDaily<-function(prismfold,wvars,spatialid,interfile,filterfile,timespan)
   }, 
   finally={
     setwd(oldpath)
-    unlink(tempfoldname,recursive=TRUE)  
-    t2 <- proc.time()-t1
+    unlink(tempfoldname,recursive=TRUE) 
+    t2 <- proc.time() - t1
     message(sprintf('The tabulation job is done and takes %6.2f minutes',t2[3]/60)) 
   }
   )
   
- }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
