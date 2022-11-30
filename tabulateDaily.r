@@ -21,16 +21,29 @@ tabulateDaily<-function(prismfold,wvars,spatialid,interfile,filterfile,timespan)
   agflag    <- fread(filterfile,header=TRUE,stringsAsFactors = FALSE) 
   names(region) <- str_to_lower(names(region))
   
-  region <- merge(region,agflag,by='pid',all.x=1)
+  
+    
+  if (filterfile != '') { 
+    region <- merge(region,agflag,by='pid',all.x=1) 
+    agflag    <- fread(filterfile,header=TRUE,stringsAsFactors = FALSE) 
+  } else {
+    region$flag = 1
+  }
+  
+  
   fields <- c(spatialid,'pid','area') 
   
   region0 <- region[flag==1,..fields]
-   
+  
   ## mkdir a temp direcotry 
   tempfoldname <- paste0('temp',digest(Sys.time(),algo='md5')) 
   dir.create(tempfoldname) 
   oldpath <- getwd()
   setwd(tempfoldname) 
+  
+
+   
+
   
   
   tryCatch({
