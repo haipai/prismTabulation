@@ -24,7 +24,7 @@ tabulateDaily<-function(prismfold,wvars,spatialid,interfile,filterfile,timespan)
   region <- merge(region,agflag,by='pid',all.x=1)
   fields <- c(spatialid,'pid','area') 
   
-  region <- region[flag==1,..fields]
+  region0 <- region[flag==1,..fields]
    
   ## mkdir a temp direcotry 
   tempfoldname <- paste0('temp',digest(Sys.time(),algo='md5')) 
@@ -66,8 +66,8 @@ tabulateDaily<-function(prismfold,wvars,spatialid,interfile,filterfile,timespan)
           setkey(wdata,"id")
           
           #ppt 
-          tmp <- wdata[.(region$pid)] 
-          eval(parse(text=paste0('region <- cbind(region,',wvar,'=tmp[,c(',wvar,')])'))) 
+          tmp <- wdata[.(region0$pid)] 
+          eval(parse(text=paste0('region <- cbind(region0,',wvar,'=tmp[,c(',wvar,')])'))) 
           
           # remove NA from the dataframe
           eval(parse(text=paste0('region<- region[is.na(',wvar,')==FALSE,]'))) 
