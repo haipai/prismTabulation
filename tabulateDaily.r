@@ -19,7 +19,7 @@ tabulateDaily<-function(prismfold,wvars,spatialid,interfile,filterfile,timespan)
   outfile1  <- paste(wvars,collapse='_') 
   region    <- fread(interfile,header=TRUE,stringsAsFactors = FALSE) 
   agflag    <- fread(filterfile,header=TRUE,stringsAsFactors = FALSE) 
-  names(region) <- str_to_lower(names(region)) 3
+  names(region) <- str_to_lower(names(region))
   
   region <- merge(region,agflag,by='pid',all.x=1)
   fields <- c(spatialid,'pid','area') 
