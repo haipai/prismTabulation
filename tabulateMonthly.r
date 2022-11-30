@@ -32,7 +32,7 @@ tabulateMonthly<-function(prismfold,wvars,spatialid,interfile,filterfile='',time
   
   fields <- c(spatialid,'pid','area') 
   
-  region <- region[flag==1,..fields]
+  region0 <- region[flag==1,..fields]
   
   ## mkdir a temp direcotry 
   tempfoldname <- paste0('temp',digest(Sys.time(),algo='md5')) 
@@ -58,6 +58,7 @@ tabulateMonthly<-function(prismfold,wvars,spatialid,interfile,filterfile='',time
           #unzip ppt 
           file_wvar  <- paste0(prismfold,'/',wvar,'/',yr,'/','PRISM_',wvar,'_stable_4kmM3_',dtstr,'_bil.zip',sep='') 
           zip_wvar   <- paste('PRISM_',wvar,'_stable_4kmM3_',dtstr,'_bil.bil',sep='') 
+          cat(sprintf('%s  ',wvar))
           unzip(file_wvar)
           
           # read in raster files 
@@ -75,8 +76,8 @@ tabulateMonthly<-function(prismfold,wvars,spatialid,interfile,filterfile='',time
           setkey(wdata,"id")
           
           #ppt 
-          tmp <- wdata[.(region$pid)] 
-          eval(parse(text=paste0('region <- cbind(region,',wvar,'=tmp[,c(',wvar,')])'))) 
+          tmp <- wdata[.(region0$pid)] 
+          eval(parse(text=paste0('region <- cbind(region0,',wvar,'=tmp[,c(',wvar,')])'))) 
           
           # remove NA from the dataframe
           eval(parse(text=paste0('region<- region[is.na(',wvar,')==FALSE,]'))) 
@@ -86,7 +87,7 @@ tabulateMonthly<-function(prismfold,wvars,spatialid,interfile,filterfile='',time
           region[,w:=area/totarea] 
           
           #mean
-          sum_mean= eval(parse(text=paste0('region[,.(',wvar,'=sum(',wvar,'*w)),by=spatialid]')))  
+          eval(parse(text=paste0('sum_mean <- region[,.(',wvar,'=sum(',wvar,'*w)),by=spatialid]')))  
           
           if (wvar == wvars[1]) {
             result <- sum_mean
@@ -108,7 +109,7 @@ tabulateMonthly<-function(prismfold,wvars,spatialid,interfile,filterfile='',time
         }
         # report process 
         cat(sprintf('    The month of %s is completed\n',dtstr)) 
-        rm('result')
+
       }
       
     }
