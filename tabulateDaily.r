@@ -1,5 +1,5 @@
 ### Tabulate PRISM weather variables
-tabulateDaily<-function(prismfold,wvars,spatialid,interfile='',filterfile,timespan) {
+tabulateDaily<-function(prismfold,wvars,spatialid,interfile,filterfile='',timespan) {
   ### load packages
   require(data.table)
   require(raster)
