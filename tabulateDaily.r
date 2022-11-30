@@ -18,7 +18,6 @@ tabulateDaily<-function(prismfold,wvars,spatialid,interfile,filterfile='',timesp
   
   outfile1  <- paste(wvars,collapse='_') 
   region    <- fread(interfile,header=TRUE,stringsAsFactors = FALSE) 
-  agflag    <- fread(filterfile,header=TRUE,stringsAsFactors = FALSE) 
   names(region) <- str_to_lower(names(region))
   
   
